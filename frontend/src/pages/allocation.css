@@ -1,0 +1,338 @@
+/* =========================================
+   Allocations Module CSS
+   Built for Modern Admin Dashboard Layout
+   ========================================= */
+
+.alloc-container {
+  padding: 40px;
+  background-color: #f4f7fe; /* Matches the dashboard background */
+  min-height: calc(100vh - 70px);
+  width: 100%;
+  animation: allocFadeIn 0.4s ease-out;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.alloc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  animation: allocSlideDown 0.5s ease-out;
+}
+
+.alloc-header h2 {
+  font-size: 26px;
+  color: #1e293b;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* =========================================
+   Buttons
+   ========================================= */
+.alloc-btn-primary {
+  background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+}
+
+.alloc-btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(67, 97, 238, 0.35);
+  background: linear-gradient(135deg, #3a56d4 0%, #2f43ba 100%);
+}
+
+.alloc-btn-secondary {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.alloc-btn-secondary:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* =========================================
+   Table Card & Layout
+   ========================================= */
+.alloc-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  animation: allocScaleUp 0.5s ease-out;
+}
+
+.alloc-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.alloc-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.alloc-table th, .alloc-table td {
+  padding: 18px 24px;
+  text-align: left;
+}
+
+.alloc-table th {
+  background-color: #f8fafc;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.alloc-table tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.alloc-table tr:last-child {
+  border-bottom: none;
+}
+
+.alloc-table tr:hover {
+  background-color: #f8fafc;
+  transform: scale(1.005) translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.alloc-fw-bold {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.alloc-date {
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Room Badge */
+.alloc-room-badge {
+  background-color: #eef2ff;
+  color: #4f46e5;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid #c7d2fe;
+}
+
+/* Table Action Buttons */
+.alloc-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.alloc-btn-edit, .alloc-btn-delete {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.alloc-btn-edit {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.alloc-btn-edit:hover {
+  background-color: #dcfce7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(22, 163, 74, 0.15);
+}
+
+.alloc-btn-delete {
+  background-color: #fff1f2;
+  color: #e11d48;
+  border: 1px solid #fecdd3;
+}
+
+.alloc-btn-delete:hover {
+  background-color: #ffe4e6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(225, 29, 72, 0.15);
+}
+
+/* =========================================
+   Modal Form
+   ========================================= */
+.alloc-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: allocFadeIn 0.2s ease-out;
+}
+
+.alloc-modal-content {
+  background-color: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: allocSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.alloc-modal-header {
+  padding: 24px 30px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8fafc;
+}
+
+.alloc-modal-header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.alloc-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.alloc-modal-close:hover {
+  color: #0f172a;
+}
+
+.alloc-form {
+  padding: 30px;
+}
+
+.alloc-form-group {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.alloc-form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #475569;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alloc-form-group input, 
+.alloc-form-group select {
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #1e293b;
+  transition: all 0.2s;
+  background-color: #fff;
+  font-family: inherit;
+}
+
+.alloc-form-group input:focus, 
+.alloc-form-group select:focus {
+  outline: none;
+  border-color: #4361ee;
+  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+}
+
+.alloc-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* =========================================
+   Alerts & Empty States
+   ========================================= */
+.alloc-empty {
+  text-align: center;
+  padding: 60px 20px !important;
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.alloc-alert {
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  animation: allocSlideDown 0.3s ease-out;
+}
+
+.alloc-alert-error {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.alloc-alert-success {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+/* =========================================
+   Animations
+   ========================================= */
+@keyframes allocFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes allocSlideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes allocSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes allocScaleUp {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}

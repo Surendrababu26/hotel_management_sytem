@@ -1,0 +1,264 @@
+.payments-container {
+    padding: 30px;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+.payments-header {
+    margin-bottom: 30px;
+}
+
+.payments-header h1 {
+    font-size: 2.5rem;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.payments-header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.payments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+/* Card Styling */
+.payment-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.payment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #0f172a;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+}
+
+.card-title .icon {
+    font-size: 1.8rem;
+}
+
+/* Form Styling */
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    color: #475569;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.pay-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+.pay-btn:hover {
+    opacity: 0.9;
+}
+
+.pay-btn:active {
+    transform: scale(0.98);
+}
+
+.pay-btn:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+}
+
+/* Status List */
+.status-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.month-badge {
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.month-badge.paid {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.month-badge.pending {
+    background: #fff7ed;
+    color: #ea580c;
+    border: 1px solid #ffedd5;
+}
+
+/* Transaction List (Admin) */
+.transaction-table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.transaction-table th {
+    padding: 16px;
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.transaction-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    font-size: 1rem;
+}
+
+.transaction-table tr:hover {
+    background: #f8fafc;
+}
+
+.status-indicator {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.status-indicator.paid {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-badge.available {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-badge.unavailable {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.alloc-alert {
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.alloc-alert-error {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.alloc-alert-success {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+/* Revenue Card */
+.revenue-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: white;
+}
+
+.revenue-card .card-title {
+    color: white;
+}
+
+.revenue-amount {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-top: 20px;
+}
+
+.revenue-amount span {
+    font-size: 1.5rem;
+    opacity: 0.7;
+    margin-right: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .payments-container {
+        padding: 20px;
+    }
+
+    .payments-header h1 {
+        font-size: 2rem;
+    }
+
+    .payments-grid {
+        grid-template-columns: 1fr;
+    }
+}
