@@ -21,7 +21,8 @@ function Payments() {
         month: "",
         year: new Date().getFullYear(),
         amount: 5000,
-        payment_method: "UPI"
+        payment_method: "UPI",
+        status: "PAID"
     });
 
     // Admin States
@@ -106,15 +107,35 @@ function Payments() {
         setSuccess(null);
         try {
             const result = await API.makePayment(paymentForm);
-            setSuccess(`Payment of ₹${result.amount} for ${result.month} successful!`);
-            fetchStudentData(); // Refresh data
+            // ✅ Check if payment was saved as FAILED
+            if (result.status === 'FAILED') {
+                setError(`❌ Payment for ${result.month} ${result.year} FAILED. Your payment was NOT applied. Please try again.`);
+                fetchStudentData(); // Refresh so pending months stay correct
+            } else {
+                setSuccess(`✅ Payment of ₹${result.amount} for ${result.month} ${result.year} was successful!`);
+                fetchStudentData();
+            }
         } catch (err) {
             console.error(err);
             try {
+                // Try to parse error message if it's JSON string
                 const parsed = JSON.parse(err.message);
-                setError(parsed.non_field_errors ? parsed.non_field_errors[0] : "Payment failed.");
+                
+                if (parsed.non_field_errors) {
+                    setError(`Error: ${parsed.non_field_errors[0]}`);
+                } else if (parsed.detail) {
+                    setError(`Error: ${parsed.detail}`);
+                } else if (typeof parsed === 'object') {
+                    // Handle field errors (e.g. { "month": ["invalid"], "year": ["error"] })
+                    const firstKey = Object.keys(parsed)[0];
+                    const firstError = Array.isArray(parsed[firstKey]) ? parsed[firstKey][0] : parsed[firstKey];
+                    setError(`Error in ${firstKey}: ${firstError}`);
+                } else {
+                    setError(`Payment failed: ${err.message}`);
+                }
             } catch (e) {
-                setError("Payment failed. Please try again.");
+                // If not JSON, show the raw message
+                setError(`Payment failed: ${err.message || "Please try again."}`);
             }
         } finally {
             setLoading(false);
@@ -128,9 +149,16 @@ function Payments() {
         setSuccess(null);
         try {
             const result = await API.makePayment(adminFormData);
-            setSuccess(`Admin: Payment of ₹${result.amount} for Student ID ${result.student} successful!`);
-            setIsAdminModalOpen(false);
-            fetchAdminData();
+            // ✅ Check if admin payment was saved as FAILED
+            if (result.status === 'FAILED') {
+                setError(`❌ Payment for Student ID ${result.student} - ${result.month} ${result.year} FAILED. Not applied.`);
+                setIsAdminModalOpen(false);
+                fetchAdminData();
+            } else {
+                setSuccess(`✅ Admin: Payment of ₹${result.amount} for Student ID ${result.student} successful!`);
+                setIsAdminModalOpen(false);
+                fetchAdminData();
+            }
         } catch (err) {
             console.error(err);
             setError("Admin failed to record payment.");
@@ -345,6 +373,13 @@ function Payments() {
                                                 <option value="UPI">UPI</option>
                                                 <option value="CARD">Card</option>
                                                 <option value="CASH">Cash</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Payment Status Simulation</label>
+                                            <select name="status" value={paymentForm.status} onChange={handleInputChange}>
+                                                <option value="PAID">Success (PAID)</option>
+                                                <option value="FAILED">Simulate Failure (FAILED)</option>
                                             </select>
                                         </div>
                                         <button type="submit" className="pay-btn" disabled={loading}>

@@ -23,7 +23,7 @@ ALL_MONTHS = [
 # Admin & Student: List/Create Payments
 # ---------------------------
 class PaymentListView(generics.ListCreateAPIView):
-    queryset = Payment.objects.filter(status='PAID')
+    queryset = Payment.objects.all().order_by('-payment_date')
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
 
@@ -116,20 +116,50 @@ class StudentPaymentView(generics.CreateAPIView):
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        # Determine the student
-        if hasattr(self.request.user, 'student_profile'):
-            student = self.request.user.student_profile
-        elif self.request.user.is_staff:
-            student_id = self.request.data.get('student')
+    def create(self, request, *args, **kwargs):
+        # Determine student early to perform cleanup
+        if hasattr(request.user, 'student_profile'):
+            student = request.user.student_profile
+        elif request.user.is_staff:
+            student_id = request.data.get('student')
             if not student_id:
-                raise PermissionDenied("Student ID is required for Admin to create payment.")
+                 return Response({"student": ["Student ID required"]}, status=400)
             student = Student.objects.get(id=student_id)
         else:
-            raise PermissionDenied("You are not authorized to create payments.")
+            return Response({"detail": "Not authorized"}, status=403)
 
-        #  Save the payment
-        payment = serializer.save(student=student, status='PAID')
+        # Cleanup FAILED payments BEFORE validation
+        month = request.data.get('month', '').strip().capitalize()
+        year = request.data.get('year')
+        if month and year:
+            Payment.objects.filter(student=student, month=month, year=year, status='FAILED').delete()
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=201, headers=headers)
+
+    def perform_create(self, serializer):
+        # We handle student determination in create() to allow cleanup, 
+        # so we fetch it again or pass it here. 
+        if hasattr(self.request.user, 'student_profile'):
+            student = self.request.user.student_profile
+        else:
+            student = Student.objects.get(id=self.request.data.get('student'))
+
+        payment_status = self.request.data.get('status', 'PAID')
+        payment = serializer.save(student=student, status=payment_status)
+
+        if payment_status == 'FAILED':
+            return
+
+        # Rest of the logic (emails etc)
+        paid_months = list(Payment.objects.filter(student=student, status='PAID')
+                           .values_list('month', flat=True))
+        paid_lower = [m.lower() for m in paid_months]
+        unpaid_months = [m for m in ALL_MONTHS if m.lower() not in paid_lower]
+        # ... (rest of method follows)
 
         #  Calculate paid and unpaid months for this student
         paid_months = list(Payment.objects.filter(student=student, status='PAID')
