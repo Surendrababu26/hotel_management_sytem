@@ -18,10 +18,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ----------------------------
 # Security
-# ----------------------------
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-do-not-use-in-prod')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['*']
+# ---------------------------
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 # ----------------------------
 # Installed Apps
 # ----------------------------
