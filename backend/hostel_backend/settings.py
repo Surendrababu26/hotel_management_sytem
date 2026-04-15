@@ -28,9 +28,11 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-# Split ALLOWED_HOSTS if provided, otherwise default to allowing all
+# Make ALLOWED_HOSTS accept all requests to fix the 400 Bad Request issue
 allowed_hosts_env = os.getenv("ALLOWED_HOSTS", "*")
-ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",")] if allowed_hosts_env else ["*"]
+ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",") if host.strip()]
+if "*" not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append("*")
 # ----------------------------
 # Installed Apps
 # ----------------------------
