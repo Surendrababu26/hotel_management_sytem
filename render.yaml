@@ -6,4 +6,4 @@ services:
     startCommand: cd backend && gunicorn hostel_backend.wsgi:application
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.12.1

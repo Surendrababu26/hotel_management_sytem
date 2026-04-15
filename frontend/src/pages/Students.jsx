@@ -54,6 +54,21 @@ function Students() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    // Auto-fill logic when user is selected
+    if (name === "user") {
+      const selectedUser = unlinkedUsers.find(u => u.id.toString() === value);
+      if (selectedUser) {
+        setFormData((prev) => ({ 
+          ...prev, 
+          [name]: value,
+          name: selectedUser.username,
+          email: selectedUser.email
+        }));
+        return;
+      }
+    }
+    
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -93,7 +108,26 @@ function Students() {
       fetchUnlinkedUsers();
     } catch (err) {
       console.error(err);
-      setError(`Failed to ${editingStudent ? 'update' : 'add'} student. Please check input data.`);
+      
+      // Try to parse the error message if it's a JSON string from our API wrapper
+      let errorMessage = `Failed to ${editingStudent ? 'update' : 'add'} student. Please check input data.`;
+      try {
+        const parsedError = JSON.parse(err.message);
+        // Extract field validation errors if they exist
+        if (typeof parsedError === 'object') {
+          const errors = [];
+          for (const key in parsedError) {
+              errors.push(`${key}: ${parsedError[key]}`);
+          }
+          if (errors.length > 0) errorMessage = errors.join(' | ');
+        }
+      } catch (parseError) {
+        if (err.message && err.message !== "Failed to fetch") {
+           errorMessage = err.message;
+        }
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
