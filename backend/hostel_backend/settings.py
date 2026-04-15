@@ -14,25 +14,25 @@ from dotenv import load_dotenv
 # ----------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Add the backend directory to sys.path so Django can find apps
-# (accounts, students, rooms, etc.) when running from the repo root
+# Add backend directory to sys.path
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-# Load .env file from the backend directory
+# Load .env file
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # ----------------------------
 # Security
-# ---------------------------
-
-SECRET_KEY = os.getenv("SECRET_KEY")
+# ----------------------------
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-only-for-dev")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-# Make ALLOWED_HOSTS accept all requests to fix the 400 Bad Request issue
+
 allowed_hosts_env = os.getenv("ALLOWED_HOSTS", "*")
 ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",") if host.strip()]
+
 if "*" not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append("*")
+
 # ----------------------------
 # Installed Apps
 # ----------------------------
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     
+
     'rest_framework',
     'corsheaders',
     'accounts',
@@ -70,6 +70,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hostel_backend.urls'
 
+# ----------------------------
+# Templates
+# ----------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -90,7 +93,6 @@ WSGI_APPLICATION = 'hostel_backend.wsgi.application'
 # ----------------------------
 # Database
 # ----------------------------
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -100,20 +102,19 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT'),
         'OPTIONS': {
-            'ssl': {'ca': ''},
+            'ssl': {'ca': '/path/to/clever-cloud-ca.pem'}
         }
     }
 }
-
 
 # ----------------------------
 # Password Validation
 # ----------------------------
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # ----------------------------
@@ -155,13 +156,16 @@ REST_FRAMEWORK = {
     ]
 }
 
+# ----------------------------
+# JWT
+# ----------------------------
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
 # ----------------------------
-# Email Settings for Gmail
+# Email Settings
 # ----------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -169,4 +173,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', os.getenv('EMAIL_HOST_USER'))
